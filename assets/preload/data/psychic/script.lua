@@ -1,6 +1,15 @@
 -- Dialogue shit
 local playDialogue = false;
 local playedVideo = false;
+function onCreate() -- Lasercar - no more split second frame without the black screen (in psych 0.7.1h)
+	if not playedVideo and isStoryMode and not seenCutscene then
+	makeLuaSprite('blackTransition', nil, -500, -400);
+	makeGraphic('blackTransition', screenWidth * 2, screenHeight * 2, '000000');
+	addLuaSprite('blackTransition', true);
+	setProperty('camHUD.visible', false);
+	end
+end
+
 function onStartCountdown()
 	if not playedVideo and isStoryMode and not seenCutscene then -- Block the first countdown and play video cutscene
 		startVideo('Psychic_Cutscene');
@@ -18,9 +27,6 @@ function onStartCountdown()
 		runTimer('startZoom', 0.75);
 		runTimer('startDialogue', 2.75);
 
-		makeLuaSprite('blackTransition', nil, -500, -400);
-		makeGraphic('blackTransition', screenWidth * 2, screenHeight * 2, '000000')
-		addLuaSprite('blackTransition', true);
 		return Function_Stop;
 	end
 	return Function_Continue;
@@ -29,6 +35,7 @@ end
 function onTimerCompleted(tag, loops, loopsLeft)
 	if tag == 'startDialogue' then -- Timer completed, play dialogue
 		startDialogue('dialogue');
+		setProperty('camHUD.visible', true);
 	elseif tag == 'startZoom' then
 		doTweenZoom('camGameZoomTwn', 'camGame', getProperty('defaultCamZoom'), 2, 'quadInOut');
 		doTweenAlpha('blackTransitionTwn', 'blackTransition', 0, 2, 'sineOut');
@@ -59,7 +66,7 @@ function onEndSong()
 		setProperty('dad.stunned', true);
 
 		makeLuaSprite('blackTransition', nil, -500, -400);
-		makeGraphic('blackTransition', screenWidth * 2, screenHeight * 2, '000000')
+		makeGraphic('blackTransition', screenWidth * 2, screenHeight * 2, '000000');
 		addLuaSprite('blackTransition', true);
 		setProperty('blackTransition.alpha', 0);
 
@@ -72,8 +79,8 @@ function onEndSong()
 
 		doTweenZoom('camGameZoomTwn', 'camGame', 1, 6, 'sineInOut');
 		doTweenAlpha('camHUDAlphaTwn', 'camHUD', 0, 1, 'linear'); 
-		doTweenX('camFollowPosXTwn', 'camFollowPos', cutsceneX + 260, 6, 'quadOut');
-		doTweenY('camFollowPosYTwn', 'camFollowPos', cutsceneY + 400, 6, 'quadOut');
+		doTweenX('camFollowPosXTwn', getProperty('camGame.scroll'), cutsceneX + 260 -(screenWidth / 2), 6, 'quadOut'); --Lasercar - this tween gets stopped/the camera reset when the song changes in Psych 0.71h and I can't be bothered to figure out how to fix it
+		doTweenY('camFollowPosYTwn', getProperty('camGame.scroll'), cutsceneY + 400 -(screenHeight / 2), 6, 'quadOut');
 		runTimer('startBlackTrans', 1.5);
 		runTimer('endSongBlackTrans', 11);
 		runTimer('endSongAgain', 15);

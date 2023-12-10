@@ -1,3 +1,4 @@
+--Note: Don't enable both trails at separate times - the same function is called for both, after all...
 trailEnabledDad = false;
 trailEnabledBF = false;
 timerStartedDad = false;
@@ -14,6 +15,7 @@ function onEvent(name, value1, value2)
 				timerStartedDad = true;
 			end
 			trailEnabledDad = true;
+			curTrailDad = 0;
 		else
 			trailEnabledDad = false;
 		end
@@ -24,6 +26,7 @@ function onEvent(name, value1, value2)
 				timerStartedBF = true;
 			end
 			trailEnabledBF = true;
+			curTrailBF = 0;
 		else
 			trailEnabledBF = false;
 		end
@@ -54,8 +57,8 @@ function createTrailFrame(tag)
 
 	if tag == 'BF' then
 		num = curTrailBF;
-		curTrailBF = curTrailBF + 1;
 		if trailEnabledBF then
+			curTrailBF = curTrailBF + 1;
 			color = getColorFromHex('FF3D6E');
 			image = getProperty('boyfriend.imageFile')
 			frame = getProperty('boyfriend.animation.frameName');
@@ -66,8 +69,8 @@ function createTrailFrame(tag)
 		end
 	else
 		num = curTrailDad;
-		curTrailDad = curTrailDad + 1;
 		if trailEnabledDad then
+			curTrailDad = curTrailDad + 1;
 			color = getColorFromHex('FF00FF');
 			image = getProperty('dad.imageFile')
 			frame = getProperty('dad.animation.frameName');

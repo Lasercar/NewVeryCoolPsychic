@@ -1,0 +1,10 @@
+{
+	"confirm_anim": "M Dad Idle",
+	"idle_anim": "M Psychic Idle",
+	"position": [
+		0,
+		35
+	],
+	"scale": 0.9,
+	"image": "Menu_Psychic"
+}

@@ -570,7 +570,22 @@
 				"lengthInSteps": 16,
 				"altAnim": false,
 				"typeOfSection": 0,
-				"sectionNotes": [],
+				"sectionNotes": [
+					[
+						55941.1764705882,
+						-1,
+						"Toggle Trail",
+						"",
+						"1"
+					],
+					[
+						56382.3529411764,
+						-1,
+						"Toggle Trail",
+						"",
+						"0"
+					]
+				],
 				"bpm": 0,
 				"changeBPM": false,
 				"mustHitSection": false
@@ -764,7 +779,7 @@
 						-1,
 						"Toggle Trail",
 						"",
-						"0"
+						"1"
 					],
 					[
 						72529.4117647058,
@@ -1102,7 +1117,7 @@
 						-1,
 						"Toggle Trail",
 						"",
-						"0"
+						"1"
 					]
 				],
 				"bpm": 0,

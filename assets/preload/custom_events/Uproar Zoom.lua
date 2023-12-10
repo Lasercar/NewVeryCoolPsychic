@@ -21,8 +21,8 @@ function onEvent(name, value1, value2)
 		else
 			specialZoom = true;
 			setProperty('camGame.zoom', getProperty('camGame.zoom') + addToZoom);
-			setProperty('camFollowPos.x', getProperty('camFollowPos.x') + maxAddX * addToZoom);
-			setProperty('camFollowPos.y', getProperty('camFollowPos.y') + maxAddY * addToZoom);
+			setProperty('camGame.scroll.x', getProperty('camGame.scroll.x') + maxAddX * addToZoom);
+			setProperty('camGame.scroll.y', getProperty('camGame.scroll.y') + maxAddY * addToZoom);
 			setProperty('cameraSpeed', 0);
 		end
 	end

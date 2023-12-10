@@ -1,31 +1,8 @@
 package options;
 
-#if desktop
-import Discord.DiscordClient;
-#end
-import flash.text.TextField;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.addons.display.FlxGridOverlay;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.math.FlxMath;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import lime.utils.Assets;
-import flixel.FlxSubState;
-import flash.text.TextField;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.util.FlxSave;
-import haxe.Json;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
-import flixel.input.keyboard.FlxKey;
-import flixel.graphics.FlxGraphic;
-import Controls;
-
-using StringTools;
+import objects.CheckboxThingie;
+import objects.AttachedText;
+import options.Option;
 
 class BaseOptionsMenu extends MusicBeatSubstate
 {
@@ -37,12 +14,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
 
-	private var boyfriend:Character = null;
-	private var previewNotes:AttachedSprite;
 	private var descBox:FlxSprite;
 	private var descText:FlxText;
-	
-	private var previewNoteOption:Option;
 
 	public var title:String;
 	public var rpcTitle:String;
@@ -61,9 +34,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat-' + OptionsState.desatNum));
 		bg.color = 0xFFea71fd;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
-		bg.updateHitbox();
 		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 
 		// avoids lagspikes while scrolling through menus!
@@ -80,9 +52,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		descBox.alpha = 0.6;
 		add(descBox);
 
-		var titleText:Alphabet = new Alphabet(0, 0, title, true, false, 0, 0.6);
-		titleText.x += 60;
-		titleText.y += 40;
+		var titleText:Alphabet = new Alphabet(75, 45, title, true);
+		titleText.setScale(0.6);
 		titleText.alpha = 0.4;
 		add(titleText);
 
@@ -94,16 +65,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		for (i in 0...optionsArray.length)
 		{
-			var optionText:Alphabet = new Alphabet(0, 70 * i, optionsArray[i].name, false, false);
+			var optionText:Alphabet = new Alphabet(290, 260, optionsArray[i].name, false);
 			optionText.isMenuItem = true;
-			optionText.x += 300;
 			/*optionText.forceX = 300;
 			optionText.yMult = 90;*/
-			optionText.xAdd = 200;
 			optionText.targetY = i;
 			grpOptions.add(optionText);
 
-			var textChild:AttachedText = null;
 			if(optionsArray[i].type == 'bool') {
 				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
 				checkbox.sprTracker = optionText;
@@ -111,50 +79,21 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				checkboxGroup.add(checkbox);
 			} else {
 				optionText.x -= 80;
-				optionText.xAdd -= 80;
-				textChild = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 80);
-				textChild.sprTracker = optionText;
-				textChild.copyAlpha = true;
-				textChild.ID = i;
-				grpTexts.add(textChild);
-				optionsArray[i].setChild(textChild);
+				optionText.startPosition.x -= 80;
+				//optionText.xAdd -= 80;
+				var valueText:AttachedText = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 60);
+				valueText.sprTracker = optionText;
+				valueText.copyAlpha = true;
+				valueText.ID = i;
+				grpTexts.add(valueText);
+				optionsArray[i].child = valueText;
 			}
-
-			if(optionsArray[i].showBoyfriend && boyfriend == null)
-			{
-				reloadBoyfriend();
-			}
-			if(optionsArray[i].showNotes && previewNotes == null)
-			{
-				var colorSwap:ColorSwap = new ColorSwap();
-				colorSwap.hue = ClientPrefs.arrowHSV[2][0] / 360;
-				colorSwap.saturation = ClientPrefs.arrowHSV[2][1] / 100;
-				colorSwap.brightness = ClientPrefs.arrowHSV[2][2] / 100;
-
-				previewNotes = new AttachedSprite();
-				previewNotes.loadGraphic(Paths.image('previewNotes'), true, 164, 164);
-				previewNotes.shader = colorSwap.shader;
-				previewNotes.animation.add('frames', [0, 1, 2], 0);
-				previewNotes.animation.play('frames');
-				previewNotes.sprTracker = textChild;
-				previewNoteOption = optionsArray[i];
-				previewNotes.setGraphicSize(Std.int(previewNotes.width * 0.7));
-				previewNotes.updateHitbox();
-				previewNotes.yAdd = 20;
-				add(previewNotes);
-				updateNotes();
-			}
+			//optionText.snapToPosition(); //Don't ignore me when i ask for not making a fucking pull request to uncomment this line ok
 			updateTextFrom(optionsArray[i]);
 		}
 
 		changeSelection();
 		reloadCheckboxes();
-	}
-
-	public function updateNotes()
-	{
-		previewNotes.animation.curAnim.curFrame = previewNoteOption.curOption;
-		previewNotes.xAdd = previewNotes.sprTracker.width + 20;
 	}
 
 	public function addOption(option:Option) {
@@ -272,27 +211,17 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 			if(controls.RESET)
 			{
-				for (i in 0...optionsArray.length)
+				var leOption:Option = optionsArray[curSelected];
+				leOption.setValue(leOption.defaultValue);
+				if(leOption.type != 'bool')
 				{
-					var leOption:Option = optionsArray[i];
-					leOption.setValue(leOption.defaultValue);
-					if(leOption.type != 'bool')
-					{
-						if(leOption.type == 'string')
-						{
-							leOption.curOption = leOption.options.indexOf(leOption.getValue());
-						}
-						updateTextFrom(leOption);
-					}
-					leOption.change();
+					if(leOption.type == 'string') leOption.curOption = leOption.options.indexOf(leOption.getValue());
+					updateTextFrom(leOption);
 				}
+				leOption.change();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				reloadCheckboxes();
 			}
-		}
-
-		if(boyfriend != null && boyfriend.animation.curAnim.finished) {
-			boyfriend.dance();
 		}
 
 		if(nextAccept > 0) {
@@ -351,30 +280,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 		descBox.updateHitbox();
 
-		if(boyfriend != null)
-		{
-			boyfriend.visible = optionsArray[curSelected].showBoyfriend;
-		}
 		curOption = optionsArray[curSelected]; //shorter lol
 		FlxG.sound.play(Paths.sound('scrollMenu'));
-	}
-
-	public function reloadBoyfriend()
-	{
-		var wasVisible:Bool = false;
-		if(boyfriend != null) {
-			wasVisible = boyfriend.visible;
-			boyfriend.kill();
-			remove(boyfriend);
-			boyfriend.destroy();
-		}
-
-		boyfriend = new Character(840, 170, 'bf', true);
-		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.75));
-		boyfriend.updateHitbox();
-		boyfriend.dance();
-		insert(1, boyfriend);
-		boyfriend.visible = wasVisible;
 	}
 
 	function reloadCheckboxes() {

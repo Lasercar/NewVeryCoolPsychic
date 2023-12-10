@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Menu_Psychic.png">
+	<!-- Created with Adobe Animate version 19.2.0.405 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="M Psychic Idle0000" x="2" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0001" x="2" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0002" x="229" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0003" x="229" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0004" x="456" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0005" x="456" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0006" x="683" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0007" x="683" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0008" x="683" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0009" x="683" y="2" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0010" x="2" y="427" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0011" x="2" y="427" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0012" x="229" y="427" width="225" height="423"/>
+	<SubTexture name="M Psychic Idle0013" x="229" y="427" width="225" height="423"/>
+</TextureAtlas>

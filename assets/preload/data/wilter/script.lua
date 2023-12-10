@@ -1,6 +1,6 @@
 function onCreate()
-	setPropertyFromClass('GameOverSubstate', 'characterName', 'bf-senpai');
-	setPropertyFromClass('GameOverSubstate', 'deathSoundName', 'fnf_loss_sfx-wilter');
+	setPropertyFromClass('substates.GameOverSubstate', 'characterName', 'bf-senpai');
+	setPropertyFromClass('substates.GameOverSubstate', 'deathSoundName', 'fnf_loss_sfx-wilter');
 	--precacheSound('BFSenpai_Dies');
 	
 	makeLuaSprite('wilterRedScreen', nil, -700, -500);
@@ -40,8 +40,8 @@ function onStartCountdown()
 		setProperty('camHUD.alpha', 0);
 		doTweenAlpha('camHUDAlphaTwn', 'camHUD', 1, 1, 'linear'); 
 		doTweenZoom('camGameZoomTwn', 'camGame', getProperty('defaultCamZoom'), 1, 'quadOut');
-		doTweenX('camFollowPosXTween', 'camFollowPos', getProperty('camFollow.x'), 1, 'sineOut');
-		doTweenY('camFollowPosYTween', 'camFollowPos', getProperty('camFollow.y'), 1, 'sineOut');
+		doTweenX('camFollowPosXTween', getProperty('camGame.scroll.x'), getProperty('camFollow.x'), 1, 'sineOut');
+		doTweenY('camFollowPosYTween', getProperty('camGame.scroll.y'), getProperty('camFollow.y'), 1, 'sineOut');
 		runTimer('startDialogue', 1.2);
 		return Function_Stop;
 	end
@@ -121,8 +121,8 @@ function onEndSong()
 		-----------------
 		
 		makeAnimatedLuaSprite('cutsceneBf', cutsceneImage, cutsceneX, cutsceneY);
-		addAnimationByPrefix('cutsceneBf', 'cutscene', 'SENBF DEATH', 24, false);
-		addAnimationByIndices('cutsceneBf', 'cutsceneLoop', 'SENBF DEATH', '78, 79, 80', 24);
+		    addAnimationByIndices('cutsceneBf', 'cutsceneLoop', 'SENBF DEATH', '78, 79, 80', 24);
+		    addAnimationByPrefix('cutsceneBf', 'cutscene', 'SENBF DEATH', 24, false);
 		addLuaSprite('cutsceneBf', true);
 
 		makeLuaSprite('vignetteCutscene', 'psychic/vignetteCutscene')
@@ -140,8 +140,8 @@ function onEndSong()
 		setProperty('redTransOut.alpha', 0.00001);
 
 		doTweenAlpha('camHUDAlphaTwn', 'camHUD', 0, 1, 'linear');
-		doTweenX('camFollowPosXTwn', 'camFollowPos', cutsceneX + 400, 2.5, 'quadOut');
-		doTweenY('camFollowPosYTwn', 'camFollowPos', cutsceneY + 150, 2.5, 'quadOut');
+		doTweenX('camFollowPosXTwn', getProperty('camGame.scroll'), cutsceneX + 400 -(screenWidth / 2), 2.5, 'quadOut');
+		doTweenY('camFollowPosYTwn', getProperty('camGame.scroll'), cutsceneY + 150 -(screenHeight / 2), 2.5, 'quadOut');
 		doTweenZoom('camGameZoomTwn', 'camGame', 0.85, 2.5, 'sineInOut');
 		doTweenAlpha('redTransInAlphaTwn', 'redTransIn', 0.4, 3.5, 'sineInOut');
 		doTweenAlpha('vignetteCutsceneTwn', 'vignetteCutscene', 0.5, 1.25, 'sineInOut');

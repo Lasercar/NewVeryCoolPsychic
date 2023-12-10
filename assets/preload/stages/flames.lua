@@ -1,5 +1,13 @@
 function onCreate()
-	if getPropertyFromClass('ClientPrefs', 'uproarParticles') then
+	makeAnimatedLuaSprite('bgFlames', 'psychic/BG_Flames', -460, -520)
+	    addAnimationByPrefix('bgFlames', 'crazy', 'BG Flames Crazy');
+	    addAnimationByPrefix('bgFlames', 'normal', 'BG Flames0');
+
+	    setScrollFactor('bgFlames', 0.95, 0.98);
+	addLuaSprite('bgFlames', false);
+	setProperty('gfGroup.visible', false);
+	
+	if not lowQuality and getPropertyFromClass('backend.ClientPrefs', 'data.uproarParticles') then
 		spawnParticles();
 	end
 end
@@ -22,8 +30,24 @@ function onCountdownStarted()
 end
 
 -- animate BG
+flameIsBig = false;
 function onEvent(name, value1, value2)
-	if name == 'Flip Notes' or name == 'Swap Notes' then
+	if name == "BG Flames Get Crazy" and not (getProperty('bgFlames.animation.curAnim.name') == 'crazy') then
+		makeLuaSprite('redFlash', nil, -500, -400);
+		makeGraphic('redFlash', screenWidth * 2, screenHeight * 2, 'FF8ACE');
+		--setBlendMode('redFlash', 'add');
+		addLuaSprite('redFlash', true);
+		doTweenAlpha('redFlashTween', 'redFlash', 0, 1.5, 'sineOut');
+		runTimer('removeRedFlash', 1);
+		objectPlayAnimation('bgFlames', 'crazy');
+		flameIsBig = true;
+		runTimer('particleSpawn', 0.025, 0);
+
+		if cameraZoomOnBeat then
+			setProperty('camGame.zoom', getProperty('camGame.zoom') + 0.5);
+			setProperty('camHUD.zoom', getProperty('camHUD.zoom') + 0.4);
+		end
+	elseif name == 'Flip Notes' or name == 'Swap Notes' then
 		runTimer('Save New Note X', 0.31);
 		isMoving = true;
 	elseif name == 'Must Press Swap' then
@@ -33,7 +57,7 @@ function onEvent(name, value1, value2)
 end
 
 function onUpdate(elapsed)
-	if difficulty == 0 or not (getProperty('flameIsBig')) or getProperty('endingSong') then
+	if not flameIsBig or difficulty == 0 or getProperty('endingSong') then
 		return;
 	end
 
@@ -59,7 +83,7 @@ function onUpdate(elapsed)
 		setPropertyFromGroup('opponentStrums', i, 'y', _G['defaultOpponentStrumY'..i] + getRandomFloat(-shakeAmount, shakeAmount));
 	end
 	
-	if getPropertyFromClass('ClientPrefs', 'uproarParticles') then
+	if not lowQuality and getPropertyFromClass('backend.ClientPrefs', 'data.uproarParticles') then
 		particleThink();
 	end
 end
@@ -75,14 +99,6 @@ function onTimerCompleted(tag, loops, loopsLeft)
 			_G['dadNoteX'..i] = getPropertyFromGroup('opponentStrums', i, 'x');
 		end
 		isMoving = false;
-	end
-end
-
--- correct camera position
-function onMoveCamera(focus)
-	if focus == 'boyfriend' then
-		setProperty('camFollow.x', getProperty('camFollow.x') - 100);
-		setProperty('camFollow.y', getProperty('camFollow.y') - 50);
 	end
 end
 
@@ -107,23 +123,24 @@ function particleTimer()
 		particleCount = 1;
 	end
 
-	flameIsBig = getProperty('flameIsBig');
 	tag = ('flamesParticle'..particleCount);
-	setProperty(tag..'.scale.x', getRandomFloat(1000, 1500) / 1000);
+	math.randomseed(os.clock() * 100 + getSongPosition());
+	setProperty(tag..'.scale.x', math.random(1000, 1500) / 1000);
 	if flameIsBig then
-		setProperty(tag..'.x', getRandomFloat(-500, 2000));
+		setProperty(tag..'.x', math.random(-500, 2000));
 	else
-		setProperty(tag..'.x', getRandomFloat(0, 1500));
+		setProperty(tag..'.x', math.random(0, 1500));
 	end
-	velX = getRandomFloat(-50, 50);
+	velX = math.random(-50, 50);
 	setProperty(tag..'.velocity.x', velX);
-	setProperty(tag..'.scale.y', getRandomFloat(1000, 1500) / 1000);
+	math.randomseed(os.clock() * 92.4 - getSongPosition());
+	setProperty(tag..'.scale.y', math.random(1000, 1500) / 1000);
 	if flameIsBig then
-		setProperty(tag..'.y', getRandomFloat(100, 1000));
+		setProperty(tag..'.y', math.random(100, 1000));
 	else
-		setProperty(tag..'.y', getRandomFloat(150, 500));
+		setProperty(tag..'.y', math.random(150, 500));
 	end
-	setProperty(tag..'.velocity.y', getRandomFloat(-75, -150));
+	setProperty(tag..'.velocity.y', math.random(-75, -150));
 	setProperty(tag..'.alpha', 1);
 
 	if flameIsBig then

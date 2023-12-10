@@ -7,8 +7,8 @@ function onEvent(name, value1, value2)
 		cameraSetTarget('boyfriend');
 		cameraZoomPosX = getProperty('camFollow.x') + 40;
 		cameraZoomPosY = getProperty('camFollow.y') + 40;
-		setProperty('camFollowPos.x', getProperty('camFollowPos.x') + 30);
-		setProperty('camFollowPos.y', getProperty('camFollowPos.y') + 35);
+		setProperty('camGame.scroll.x', getProperty('camGame.scroll.x') + 30);
+		setProperty('camGame.scroll.y', getProperty('camGame.scroll.y') + 35);
 		doTweenZoom('wackyZoomCamTween', 'camGame', 0.825, 0.15, 'linear');
 		setProperty('camZooming', false);
 		setProperty('cameraSpeed', 4.5);
