@@ -153,7 +153,7 @@
 			"fps": 24,
 			"anim": "singLEFT-alt",
 			"indices": [],
-			"name": "PSYCHIC LEFT ALT"
+			"name": "PSYCHIC left ALT"
 		},
 		{
 			"offsets": [
@@ -173,7 +173,7 @@
 				12,
 				13
 			],
-			"name": "PSYCHIC LEFT ALT"
+			"name": "PSYCHIC left ALT"
 		},
 		{
 			"offsets": [
@@ -184,7 +184,7 @@
 			"fps": 24,
 			"anim": "singRIGHT-alt",
 			"indices": [],
-			"name": "PSYCHIC RIGHT ALT"
+			"name": "PSYCHIC right ALT"
 		},
 		{
 			"offsets": [
@@ -204,7 +204,7 @@
 				12,
 				13
 			],
-			"name": "PSYCHIC RIGHT ALT"
+			"name": "PSYCHIC right ALT"
 		},
 		{
 			"offsets": [
@@ -215,7 +215,7 @@
 			"fps": 24,
 			"anim": "singUP-alt",
 			"indices": [],
-			"name": "PSYCHIC UP ALT"
+			"name": "PSYCHIC up ALT"
 		},
 		{
 			"offsets": [
@@ -235,7 +235,7 @@
 				12,
 				13
 			],
-			"name": "PSYCHIC UP ALT"
+			"name": "PSYCHIC up ALT"
 		},
 		{
 			"offsets": [
@@ -246,7 +246,7 @@
 			"fps": 24,
 			"anim": "singDOWN-alt",
 			"indices": [],
-			"name": "PSYCHIC DOWN ALT"
+			"name": "PSYCHIC down ALT"
 		},
 		{
 			"offsets": [
@@ -266,7 +266,7 @@
 				12,
 				13
 			],
-			"name": "PSYCHIC DOWN ALT"
+			"name": "PSYCHIC down ALT"
 		},
 		{
 			"loop": false,

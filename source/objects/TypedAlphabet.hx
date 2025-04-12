@@ -15,7 +15,7 @@ class TypedAlphabet extends Alphabet
 		this.delay = delay;
 	}
 
-	override function set_text(newText:String)
+	override private function set_text(newText:String)
 	{
 		super.set_text(newText);
 

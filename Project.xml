@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="FNF - Mind Games Mod" file="VSPsychic" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.0.2" company="ninjamuffin99" />
+	<app title="FNF - Mind Games Mod" file="VSPsychic" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="0.2.8" company="ShadowMario" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -17,21 +17,32 @@
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
-
+	
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
 	<define name="MODS_ALLOWED" if="desktop" />
 	<define name="HSCRIPT_ALLOWED" if="desktop" />
 	<define name="LUA_ALLOWED" if="desktop" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
-	<define name="VIDEOS_ALLOWED" if="windows || linux || android" unless="32bits"/>
-	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
-	<define name="TITLE_SCREEN_EASTER_EGG"/> <!-- DELETE THE if="officialBuild" for enabling this on an unofficial build -->
+	<define name="DISCORD_ALLOWED" />
+	<define name="TRANSLATIONS_ALLOWED" />
+	<define name="IRIS_DEBUG"/>
+	
+	<define name="MULTITHREADED_LOADING" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
+	<define name="SHOW_LOADING_SCREEN" />
+	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
+
+	<define name="officialBuild" /> <!-- Idk why I have to do this, adding -officialBuild to the target flags doesn't do it??? -->
+
+	<section if="officialBuild">
+		<define name="TITLE_SCREEN_EASTER_EGG"/>
+		<define name="VIDEOS_ALLOWED" if="windows || linux || android || mac" unless="32bits"/> <!-- IF YOU WANT TO USE VIDEOS ON YOUR SOURCE MOD, GET THIS LINE OUTSIDE OF THE SECTION -->
+	</section>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
+	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" allow-high-dpi="true" />
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" />
@@ -58,65 +69,71 @@
 	<!-- Turn on Crash Handler -->
 	<define name="CRASH_HANDLER" if="desktop release" />
 
-	<!-- Preload Assets -->
-	<define name="PRELOAD_ALL" unless="web" />
-	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
-
+	<!-- Assets -->
 	<assets path="assets/fonts" />
-	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/preload" rename="assets" exclude="*.mp3"  unless="web"/>
+	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
+	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
+	<assets path="assets/embed"         exclude="*.ogg" if="web" embed="true"/>
+	<assets path="assets/embed"         exclude="*.mp3" unless="web" embed="true"/>
+	<assets path="assets/videos"        if="VIDEOS_ALLOWED"/>
+	<assets path="assets/songs"         exclude="*.ogg" if="web"/>
+	<assets path="assets/songs"         exclude="*.mp3" unless="web"/>
+	<assets path="assets/week_assets"   rename="assets" exclude="*.ogg" if="web"/>
+	<assets path="assets/week_assets"   rename="assets" exclude="*.mp3" unless="web"/>
 	<section if="TITLE_SCREEN_EASTER_EGG">
-		<assets path="assets/secrets" rename="assets" exclude="*.ogg" if="web"/>
-		<assets path="assets/secrets" rename="assets" exclude="*.mp3"  unless="web"/>
+		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web"/>
+		<assets path="assets/secrets" rename="assets/shared" exclude="*.mp3"  unless="web"/>
 	</section>
 
-	<!-- DONT ENABLE THIS -->
+	<section if="TRANSLATIONS_ALLOWED">
+		<assets path="assets/translations" rename="assets" exclude="*.ogg" if="web"/>
+		<assets path="assets/translations" rename="assets" exclude="*.mp3"  unless="web"/>
+	</section>
+
+	<section if="BASE_GAME_FILES">
+		<assets path="assets/base_game" rename="assets" exclude="*.ogg" if="web"/>
+		<assets path="assets/base_game" rename="assets" exclude="*.mp3"  unless="web"/>
+		<haxelib name="grig.audio" if="BASE_GAME_FILES"/>
+		<haxelib name="funkin.vis" if="BASE_GAME_FILES"/>
+	</section>
+
 	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
-	
-	<library name="videos"        preload="true" />
-	<section if="PRELOAD_ALL">
-		<library name="songs"         preload="true" />
-		<library name="shared"        preload="true" />
-		<library name="week_assets"       preload="true" />
-	</section>
-	
-	<section if="NO_PRELOAD_ALL">
-		<library name="songs"         preload="false" />
-		<library name="shared"        preload="false" />
-		<library name="week_assets"       preload="false" />
-	</section>
-	
-	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/shared"        library="shared"        exclude="*.ogg" if="web"/>
-	<assets path="assets/shared"        library="shared"        exclude="*.mp3" unless="web"/>
-	<assets path="assets/week_assets"   library="week_assets"   rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/week_assets"   library="week_assets"   rename="assets" exclude="*.mp3" unless="web"/>
-	
+
 	<section if="MODS_ALLOWED">
-		<assets path='example_mods' rename='mods' embed='false'/>
+		<assets path='example_mods' rename='mods' embed='false' type='template' unless="mac"/>
+		<assets path='example_mods' rename='mods' embed='false' if="mac"/>
+		<assets path='list.txt' rename='modsList.txt' />
 	</section>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 
+	<!-- OpenAL config -->
+	<section if="desktop">
+		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
+		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
+	</section>
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" />
-	<haxelib name="flixel-ui" />
-	<haxelib name="flixel-addons" />
+	<haxelib name="flixel" version="5.6.1"/>
+	<haxelib name="flixel-addons" version="3.2.2"/>
+	<haxelib name="tjson" version="1.4.0"/>
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
-	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
-	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
-	<haxelib name="discord_rpc" if="desktop"/>
-	<haxelib name="tjson" />
-	<haxedef name="openflPos" />
-	<haxedef name="hscriptPos" />
+	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.1.3"/>
+	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" version="2.0.1"/>
+	<haxelib name="hxdiscord_rpc" version="1.2.4" if="DISCORD_ALLOWED"/>
+	<haxelib name="flxanimate"/>
+
+	<!-- Disable Discord IO Thread -->
+	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
+	<haxedef name="NO_PRECOMPILED_HEADERS" if="linux" />
 
 	<!-- Enables a terminal log prompt on debug builds -->
 	<haxelib name="hxcpp-debug-server" if="debug"/>
 	<haxedef name="HXC_LIBVLC_LOGGING" if="VIDEOS_ALLOWED debug" />
+	<haxedef name="HXVLC_NO_SHARE_DIRECTORY" if="VIDEOS_ALLOWED" />
+	<define name="x86_BUILD" if="32bits" />
 	
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -143,32 +160,41 @@
 
 	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
-
+	
 	<!-- Show debug traces for hxCodec -->
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
-
+	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
-
+	
 	<!--Used for Izzy Engine's crash handler-->
 	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER" />
 	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER" />
 	<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER" />
-	<haxedef name='no-deprecation-warnings' />
 	
+	<!--Disable deprecated warnings-->
+	<haxedef name='no-deprecation-warnings' />
+
+	<!-- Haxe 4.3.0+: Enable pretty syntax errors and stuff. -->
+	<!-- pretty (haxeflixel default), indent, classic (haxe compiler default) -->
+	<haxedef name="message.reporting" value="pretty" />
+
 	<!--Macro fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<haxeflag name="--macro" value="include('my.pack')" />
 
+	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED" />
+
 	<!-- _________________________________ Custom _______________________________ -->
 
-	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	<assets path='art/icons/iconOG.png' rename='icon.png' if="linux" />
 	
-	<!--<icon path="art/icon16.png" size='16'/>
-	<icon path="art/icon32.png" size='32'/>
-	<icon path="art/icon64.png" size='64'/>-->
-	<icon path="art/psych engine emblem.png" /> <!--Lasercar - I'm actually suprised that icon for the psych engine uh, wasn't used for the psych engine (or at all)-->
+	<!--<icon path="art/icons/icon16.png" size='16'/>
+	<icon path="art/icons/icon32.png" size='32'/>
+	<icon path="art/icons/icon64.png" size='64'/>
+	<icon path="art/icons/iconOG.png" />-->
+	<icon path="art/icons/psych engine emblem.png" />
 </project>
