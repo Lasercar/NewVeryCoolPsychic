@@ -7,7 +7,7 @@ class TheEndState extends MusicBeatState
 	{
 		super.create();
 
-        var text:String; //Lasercar - this local variable didn't like being located in the timer for some reason 
+        var text:String; //This local variable didn't like being located in the timer for some reason 
 		funnyText = new Alphabet(0, 0, 'The End', true);
 		funnyText.screenCenter();
 		funnyText.y -= 25;
@@ -28,6 +28,7 @@ class TheEndState extends MusicBeatState
 							case 1, 2, 3: text += '.';
 							case 4: text += '?';
 						}
+						@:privateAccess
 						funnyText.set_text(text);
 						FlxG.sound.play(Paths.sound('dialogue'));
 						funnyText.screenCenter(X);

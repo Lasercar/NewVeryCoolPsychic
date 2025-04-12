@@ -10,6 +10,21 @@ class RGBPalette {
 	public var b(default, set):FlxColor;
 	public var mult(default, set):Float;
 
+	public function copyValues(tempShader:RGBPalette)
+	{
+		if (tempShader != null)
+		{
+			for (i in 0...3)
+			{
+				shader.r.value[i] = tempShader.shader.r.value[i];
+				shader.g.value[i] = tempShader.shader.g.value[i];
+				shader.b.value[i] = tempShader.shader.b.value[i];
+			}
+			shader.mult.value[0] = tempShader.shader.mult.value[0];
+		}
+		else shader.mult.value[0] = 0.0;
+	}
+
 	private function set_r(color:FlxColor) {
 		r = color;
 		shader.r.value = [color.redFloat, color.greenFloat, color.blueFloat];
@@ -29,9 +44,9 @@ class RGBPalette {
 	}
 	
 	private function set_mult(value:Float) {
-		mult = Math.max(0, Math.min(1, value));
+		mult = FlxMath.bound(value, 0, 1);
 		shader.mult.value = [mult];
-		return value;
+		return mult;
 	}
 
 	public function new()
@@ -127,12 +142,8 @@ class RGBPaletteShader extends FlxShader {
 
 		vec4 flixel_texture2DCustom(sampler2D bitmap, vec2 coord) {
 			vec4 color = flixel_texture2D(bitmap, coord);
-			if (!hasTransform) {
+			if (!hasTransform || color.a == 0.0 || mult == 0.0) {
 				return color;
-			}
-
-			if(color.a == 0.0 || mult == 0.0) {
-				return color * openfl_Alphav;
 			}
 
 			vec4 newColor = color;
