@@ -1,0 +1,202 @@
+{
+	"camera_boyfriend": [
+		0,
+		0
+	],
+	"_editorMeta": {
+		"boyfriend": "bf",
+		"gf": "pessy",
+		"dad": "psychic"
+	},
+	"preload": {},
+	"girlfriend": [
+		585,
+		170
+	],
+	"stageUI": "",
+	"boyfriend": [
+		1125,
+		145
+	],
+	"defaultZoom": 0.7,
+	"objects": [
+		{
+			"x": -402,
+			"y": -141,
+			"scale": [
+				1,
+				1
+			],
+			"image": "the-song/bg sky",
+			"flipX": false,
+			"filters": 3,
+			"color": "FFFFFF",
+			"angle": 0,
+			"name": "bg_sky",
+			"antialiasing": true,
+			"flipY": false,
+			"scroll": [
+				1,
+				1
+			],
+			"alpha": 1,
+			"type": "sprite"
+		},
+		{
+			"x": -402,
+			"y": -141,
+			"scale": [
+				1,
+				1
+			],
+			"image": "the-song/bg overlay",
+			"flipX": false,
+			"filters": 3,
+			"color": "FFFFFF",
+			"angle": 0,
+			"name": "bg_overlay",
+			"antialiasing": true,
+			"flipY": false,
+			"scroll": [
+				1,
+				1
+			],
+			"alpha": 1,
+			"type": "sprite"
+		},
+		{
+			"x": -402,
+			"y": -141,
+			"scale": [
+				1,
+				1
+			],
+			"image": "the-song/bg back buildings",
+			"flipX": false,
+			"filters": 3,
+			"color": "FFFFFF",
+			"angle": 0,
+			"name": "bg_back_buildings",
+			"firstAnimation": "bg back buildings",
+			"antialiasing": true,
+			"flipY": false,
+			"scroll": [
+				1,
+				1
+			],
+			"alpha": 1,
+			"animations": [
+				{
+					"loop": true,
+					"offsets": null,
+					"anim": "bg back buildings",
+					"fps": 24,
+					"name": "",
+					"indices": []
+				}
+			],
+			"type": "animatedSprite"
+		},
+		{
+			"x": -403,
+			"y": -140,
+			"scale": [
+				1,
+				1
+			],
+			"image": "the-song/bg front buildings",
+			"flipX": false,
+			"filters": 3,
+			"color": "FFFFFF",
+			"angle": 0,
+			"name": "bg_front_buildings",
+			"antialiasing": true,
+			"flipY": false,
+			"scroll": [
+				1,
+				1
+			],
+			"alpha": 1,
+			"type": "sprite"
+		},
+		{
+			"x": -90,
+			"y": -78,
+			"scale": [
+				1,
+				1
+			],
+			"image": "the-song/bg characters",
+			"flipX": false,
+			"filters": 3,
+			"color": "FFFFFF",
+			"angle": 0,
+			"name": "bg_characters",
+			"firstAnimation": "bg characters",
+			"antialiasing": true,
+			"flipY": false,
+			"scroll": [
+				1,
+				1
+			],
+			"alpha": 1,
+			"animations": [
+				{
+					"loop": true,
+					"offsets": null,
+					"anim": "bg characters",
+					"fps": 24,
+					"name": "",
+					"indices": []
+				}
+			],
+			"type": "animatedSprite"
+		},
+		{
+			"x": -402,
+			"y": -140,
+			"scale": [
+				1,
+				1
+			],
+			"image": "the-song/bg foreground",
+			"flipX": false,
+			"filters": 3,
+			"color": "FFFFFF",
+			"angle": 0,
+			"name": "bg_foreground",
+			"antialiasing": true,
+			"flipY": false,
+			"scroll": [
+				1,
+				1
+			],
+			"alpha": 1,
+			"type": "sprite"
+		},
+		{
+			"type": "gf"
+		},
+		{
+			"type": "dad"
+		},
+		{
+			"type": "boyfriend"
+		}
+	],
+	"camera_girlfriend": [
+		0,
+		0
+	],
+	"directory": "bonus",
+	"camera_speed": 1.3,
+	"opponent": [
+		45,
+		130
+	],
+	"hide_girlfriend": false,
+	"camera_opponent": [
+		0,
+		0
+	]
+}

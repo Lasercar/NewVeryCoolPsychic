@@ -1,0 +1,30 @@
+{
+	"songs": [
+		[
+			"The Song",
+			"psychic",
+			[
+				88,
+				0,
+				147
+			]
+		]
+	],
+	"hideFreeplay": false,
+	"difficulties": "hard",
+	"weekCharacters": [
+		"psychic",
+		"bf",
+		"gf"
+	],
+	"storyName": "Bonus Psychs",
+	"weekName": "Bonus",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"hideStoryMode": false,
+	"weekBefore": "psychic",
+	"startUnlocked": true
+}

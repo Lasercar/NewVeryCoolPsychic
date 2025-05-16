@@ -1,6 +1,6 @@
 -- Event notes hooks
 function onCreate()
-	makeLuaSprite('psychicVignette', 'psychic/vignette', 0, 0);
+	makeLuaSprite('psychicVignette', 'vignette', 0, 0);
 	setObjectCamera('psychicVignette', 'hud');
 	setGraphicSize('psychicVignette', screenWidth, screenHeight);
 	setScrollFactor('psychicVignette', 0, 0);
